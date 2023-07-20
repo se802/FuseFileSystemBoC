@@ -1,0 +1,6 @@
+[submodule "verona-rt"]
+	path = verona-rt
+	url = git@github.com:se802/verona-rt.git
+[submodule "libfuse"]
+	path = libfuse
+	url = git@github.com:se802/libfuse.git
