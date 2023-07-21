@@ -1,6 +1,6 @@
 # FUSE Filesystem with Verona Concurrency Model
 
-![Project Logo](path/to/logo.png)
+
 
 This repository contains the code for a FUSE Filesystem that utilizes the Verona concurrency model. Project Verona is a research project by Microsoft Research and academic collaborators at Imperial College London. It explores language and runtime design for safe, scalable memory management, and compartmentalization. The prototype presented here focuses on the memory management aspects of the research.
 
