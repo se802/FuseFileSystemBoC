@@ -20,7 +20,11 @@ Install the latest kernel to enjoy the latest FUSE optimizations:
 2. sudo install ubuntu-mainline-kernel.sh /usr/local/bin/
 3. sudo ubuntu-mainline-kernel.sh -c
 4. sudo ubuntu-mainline-kernel.sh -i
-5. sudo reboot   
+5. sudo reboot
+
+Install liburing:
+
+1. sudo apt-get install liburing-dev
 
 ## :hammer_and_wrench: Building and Running
 
