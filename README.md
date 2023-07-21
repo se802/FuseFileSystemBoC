@@ -43,17 +43,12 @@ The project consists of the following files and directories:
 
 - `CMakeLists.txt`: Used by CMake to configure the build process and generate the Makefile.
 
-- `libfuse`: Directory containing the necessary library files for using FUSE (Filesystem in Userspace).
-
-- `out`: Directory used for storing compiled binary or object files.
-
-- `my_fuse_loop.h`: This file may contain custom definitions or helper functions related to FUSE.
+- `my_fuse_loop.h`: This file contains custom definitions or helper functions related to FUSE.
 
 - `README.md`: This markdown file contains documentation or information about the project.
 
 - `run.sh`: Shell script used to run the Verona-RT filesystem.
 
-- `verona-rt`: The Verona runtime library.
 
 ## :muscle: Contributing
 
