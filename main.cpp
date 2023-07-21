@@ -19,7 +19,7 @@ using namespace verona::cpp;
 
 
 
-#define PATH "/home/csdeptucy/ssfs"
+#define PATH "/home/sevag/ssfs"
 
 
 short CorePin(int coreID)

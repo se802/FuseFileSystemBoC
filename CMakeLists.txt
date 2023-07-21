@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_BUILD_TYPE Release)
 add_subdirectory(verona-rt)
 
-include_directories(/usr/include/fuse3)
+#include_directories(/usr/local/include/fuse3)
 
 add_executable(FuseFileSystemBoC main.cpp Block.cpp DirInode.cpp FileSystem.cpp Inode.cpp RegInode.cpp)
 
