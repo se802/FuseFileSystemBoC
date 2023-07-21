@@ -14,7 +14,13 @@ Before building and running the filesystem, make sure to configure the path wher
 
 1. [main.cpp line 22](https://github.com/se802/FuseFileSystemBoC/blob/a62a67be9356947cba7b7ccc803b6818f2a2131b/main.cpp#L22)
 
+Install the latest kernel to enjoy the latest FUSE optimizations: 
 
+1. wget https://raw.githubusercontent.com/pimlie/ubuntu-mainline-kernel.sh/master/ubuntu-mainline-kernel.sh
+2. sudo install ubuntu-mainline-kernel.sh /usr/local/bin/
+3. sudo ubuntu-mainline-kernel.sh -c
+4. sudo ubuntu-mainline-kernel.sh -i
+5. sudo reboot   
 
 ## :hammer_and_wrench: Building and Running
 
