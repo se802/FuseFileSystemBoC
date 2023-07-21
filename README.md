@@ -1,7 +1,5 @@
 # FUSE Filesystem with Verona Concurrency Model
 
-
-
 This repository contains the code for a FUSE Filesystem that utilizes the Verona concurrency model. Project Verona is a research project by Microsoft Research and academic collaborators at Imperial College London. It explores language and runtime design for safe, scalable memory management, and compartmentalization. The prototype presented here focuses on the memory management aspects of the research.
 
 ## :rocket: Prerequisites
@@ -27,19 +25,45 @@ To build and run the project, follow these steps:
 
 The run script will handle the compilation and execution of the Verona FUSE Filesystem. The filesystem will be mounted at the path you configured earlier.
 
+## :open_file_folder: File Descriptions
+
+The project consists of the following files and directories:
+
+- `main.cpp`: Performs initializations related to Verona-RT and starts the FUSE filesystem.
+
+- `FileSystem.cpp` and `FileSystem.h`: Implement FUSE callbacks that handle filesystem operations such as reading, writing, creating files, and more.
+
+- `Block.cpp` and `Block.h`: Define data structures and functions related to blocks in the filesystem. Blocks are used to efficiently store data.
+
+- `DirInode.cpp` and `DirInode.h`: Contain data structures and functions related to directory inodes. Directory inodes represent directories in the filesystem and store information about their contents.
+
+- `RegInode.cpp` and `RegInode.h`: Implement data structures and functions for regular file inodes. Regular file inodes represent individual files in the filesystem and store data blocks.
+
+- `Inode.cpp` and `Inode.h`: Define the base class for representing inodes in the filesystem. Inodes store metadata about files and directories.
+
+- `CMakeLists.txt`: Used by CMake to configure the build process and generate the Makefile.
+
+- `libfuse`: Directory containing the necessary library files for using FUSE (Filesystem in Userspace).
+
+- `out`: Directory used for storing compiled binary or object files.
+
+- `my_fuse_loop.h`: This file may contain custom definitions or helper functions related to FUSE.
+
+- `README.md`: This markdown file contains documentation or information about the project.
+
+- `run.sh`: Shell script used to run the Verona-RT filesystem.
+
+- `verona-rt`: The Verona runtime library.
+
 ## :muscle: Contributing
 
 We welcome contributions to this project!
-
-
 
 ## :bulb: Acknowledgments
 
 The Verona FUSE Filesystem is built on the Verona concurrency model and inspired by ideas from various languages such as Rust, Cyclone, and Pony. We would like to thank the Project Verona team at Microsoft Research and the academic collaborators at Imperial College London for their valuable research and contributions.
 
 Please note that this project is still in its research phase and not intended for production use. Use it at your own risk.
-
-
 
 ## :blue_book: References
 
