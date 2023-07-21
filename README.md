@@ -31,9 +31,7 @@ The run script will handle the compilation and execution of the Verona FUSE File
 
 We welcome contributions to this project!
 
-## :page_facing_up: License
 
-This project is licensed under the [MIT License](LICENSE).
 
 ## :bulb: Acknowledgments
 
@@ -41,13 +39,6 @@ The Verona FUSE Filesystem is built on the Verona concurrency model and inspired
 
 Please note that this project is still in its research phase and not intended for production use. Use it at your own risk.
 
-
-## :tada: Badges
-
-Show off some badges to highlight important information about your project, such as build status, code coverage, and license:
-
-[![Build Status](https://img.shields.io/travis/username/repo.svg?style=flat-square)](https://travis-ci.org/username/repo)
-[![License](https://img.shields.io/github/license/username/repo.svg?style=flat-square)](https://github.com/username/repo/blob/master/LICENSE)
 
 
 ## :blue_book: References
