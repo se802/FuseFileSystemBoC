@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.25)
 project(FuseFileSystemBoC)
 
 set(CMAKE_CXX_STANDARD 17)
-
+set(CMAKE_BUILD_TYPE Release)
 add_subdirectory(verona-rt)
 
 include_directories(/usr/include/fuse3)

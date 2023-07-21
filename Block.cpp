@@ -13,3 +13,4 @@ void Block::read(char* data, uint64_t bytes_to_read, uint64_t block_offset, uint
 {
   memcpy(data+bytes_read, buf.get()+block_offset, bytes_to_read);
 }
+
