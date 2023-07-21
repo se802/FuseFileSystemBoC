@@ -29,7 +29,7 @@ The run script will handle the compilation and execution of the Verona FUSE File
 
 ## :muscle: Contributing
 
-We welcome contributions to this project! If you want to contribute, please read our [Contribution Guidelines](CONTRIBUTING.md) for more details.
+We welcome contributions to this project!
 
 ## :page_facing_up: License
 
@@ -41,14 +41,6 @@ The Verona FUSE Filesystem is built on the Verona concurrency model and inspired
 
 Please note that this project is still in its research phase and not intended for production use. Use it at your own risk.
 
-## :movie_camera: Screenshots/GIFs
-
-![Screenshot 1](path/to/screenshot1.png)
-![Screenshot 2](path/to/screenshot2.gif)
-
-## :bookmark_tabs: Documentation
-
-You can find more detailed documentation and usage instructions [here](https://link-to-documentation).
 
 ## :tada: Badges
 
@@ -57,13 +49,9 @@ Show off some badges to highlight important information about your project, such
 [![Build Status](https://img.shields.io/travis/username/repo.svg?style=flat-square)](https://travis-ci.org/username/repo)
 [![License](https://img.shields.io/github/license/username/repo.svg?style=flat-square)](https://github.com/username/repo/blob/master/LICENSE)
 
-## :star: Testimonials
-
-> "This project is amazing! It solved all my filesystem woes." - Happy User
-
-> "Contributing to this project was a breeze. The community is very welcoming." - Contributor
 
 ## :blue_book: References
 
 - [Project Verona Official Website](https://www.microsoft.com/research/project/project-verona/)
 - [Project Verona GitHub Repository](https://github.com/microsoft/verona)
+- [libfuse GitHub Repository](https://github.com/libfuse/libfuse)
