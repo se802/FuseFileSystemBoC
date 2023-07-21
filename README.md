@@ -14,6 +14,17 @@ Before building and running the filesystem, make sure to configure the path wher
 
 1. [main.cpp line 22](https://github.com/se802/FuseFileSystemBoC/blob/a62a67be9356947cba7b7ccc803b6818f2a2131b/main.cpp#L22)
 
+## Installing the Latest Kernel
+
+To install the latest kernel, you can use an automated script. Follow the steps below:
+
+### Step 1: Download the Script
+
+Download the shell script that automatically checks and installs the latest kernel:
+
+```bash
+wget https://raw.githubusercontent.com/pimlie/ubuntu-mainline-kernel.sh/master/ubuntu-mainline-kernel.sh
+
 ## :hammer_and_wrench: Building and Running
 
 To build and run the project, follow these steps:
