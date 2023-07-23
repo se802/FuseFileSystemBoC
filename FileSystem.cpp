@@ -1,4 +1,4 @@
-#define TIMEOUT 0
+#define TIMEOUT  86400.0
 
 #include "FileSystem.h"
 void FileSystem::init_stat(fuse_ino_t ino, time_t time, uid_t uid, gid_t gid, blksize_t blksize, mode_t mode,struct stat *i_st,bool is_regular)
@@ -244,9 +244,7 @@ int FileSystem::access(struct stat i_st, int mask, uid_t uid, gid_t gid) {
 int FileSystem::create(fuse_ino_t parent_ino, const std::string& name, mode_t mode, int flags, uid_t uid, gid_t gid, fuse_req_t req, struct fuse_file_info* fi2)
 {
   struct fuse_file_info fi = *fi2;
-  fi.parallel_direct_writes = 1;
-  fi.direct_io = 1;
-  fi.fh = 1;
+
   if(name.length() > NAME_MAX){
     std::cout << "name: " << name << "is too long" << std::endl;
     reply_fail(-ENAMETOOLONG, req);
@@ -578,7 +576,7 @@ int FileSystem::setattr(fuse_ino_t ino, FileHandle* fh, struct stat* x, int to_s
       if (to_set & FUSE_SET_ATTR_MODE) reg_inode->i_st.st_mode &= ~clear_mode;
 
       //*attr = i_st;
-      fuse_reply_attr(req, &reg_inode->i_st, 0);
+      fuse_reply_attr(req, &reg_inode->i_st, TIMEOUT);
       return 0;
     };
   }
@@ -708,7 +706,7 @@ int FileSystem::setattr(fuse_ino_t ino, FileHandle* fh, struct stat* x, int to_s
       if (to_set & FUSE_SET_ATTR_MODE) reg_inode->i_st.st_mode &= ~clear_mode;
 
 
-      fuse_reply_attr(req, &reg_inode->i_st, 0);
+      fuse_reply_attr(req, &reg_inode->i_st, TIMEOUT);
       return 0;
     };
   };
@@ -854,8 +852,7 @@ int FileSystem::mkdir(fuse_ino_t parent_ino, const std::string& name, mode_t mod
 int FileSystem::open(fuse_ino_t ino, int flags, FileHandle** fhp, uid_t uid, gid_t gid, struct fuse_file_info* fi2,fuse_req_t req)
 {
   struct fuse_file_info fi = *fi2;
-  fi.parallel_direct_writes =1;
-  fi.direct_io = 1;
+
 
   //printf("Setting direct writes");
   int mode = 0;
@@ -910,6 +907,9 @@ int FileSystem::open(fuse_ino_t ino, int flags, FileHandle** fhp, uid_t uid, gid
 ssize_t FileSystem::write(FileHandle* fh, const char* buf, size_t size, off_t off, struct fuse_file_info* fi, fuse_req_t req, char *ptr,fuse_ino_t ino)
 {
 
+  char * copy = static_cast<char *>(malloc(size));
+  memcpy(copy,buf,size);
+  fuse_reply_write(req,size);
 
   ino--;
 
@@ -918,10 +918,8 @@ ssize_t FileSystem::write(FileHandle* fh, const char* buf, size_t size, off_t of
   cown_ptr<RegInode> reg_inode = cown_ptr<RegInode>(allocated_cown);
 
   when(reg_inode) << [=](acquired_cown<RegInode> reg_in){
-    char *copy = static_cast<char*>(malloc(size));
-    memcpy(copy,buf,size);
-    fuse_reply_write(req,size);
-    reg_in->write(buf,size,off,req,avail_bytes_,copy);
+    reg_in->write(copy,size,off,req,avail_bytes_, nullptr);
+    return 0;
   };
 
   return 0;

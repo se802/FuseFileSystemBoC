@@ -89,6 +89,9 @@ private:
         // Set the maximum number of background requests to 12.
         conn->max_background = 12;
 
+        if(conn->capable & FUSE_CAP_WRITEBACK_CACHE)
+            conn->want |= FUSE_CAP_WRITEBACK_CACHE;
+
         // Check if the file system supports parallel directory operations.
         if (conn->capable & FUSE_CAP_PARALLEL_DIROPS)
             conn->want |= FUSE_CAP_PARALLEL_DIROPS;
@@ -227,8 +230,9 @@ private:
     // Get the file system instance from the request and call the file system's write() function with the provided arguments.
     static void ll_write(fuse_req_t req, fuse_ino_t ino, const char* buf, size_t size, off_t off, struct fuse_file_info* fi) {
         auto fs = get(req); // Get file system instance from the request.
-        //auto fh = reinterpret_cast<FileHandle*>(fi->fh);
+
         fs->write(nullptr, buf, size, off, fi, req, NULL, ino); // Call the file system's write() function.
+        return ;
     }
 
     // Handle the ll_read FUSE operation (read data from a file).

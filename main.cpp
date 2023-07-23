@@ -58,7 +58,7 @@ void start_dispatcher(int argc, char* argv[], SystematicTestHarness* harness) {
   when() << [=]() {
     Scheduler::add_external_event_source();
     harness->external_thread([=]() {
-      auto x = CorePin(2);
+      auto x = CorePin(40);
       if(x!=1)
         exit(1);
 
@@ -92,7 +92,7 @@ void start_dispatcher(int argc, char* argv[], SystematicTestHarness* harness) {
       fuse_session_mount(se, mountpoint);
       fuse_daemonize(true);
 
-      my_fuse_session_loop_uring(se);
+      fuse_session_loop(se);
 
       fuse_session_unmount(se);
       fuse_remove_signal_handlers(se);

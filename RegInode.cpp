@@ -105,7 +105,7 @@ void RegInode::write(const char* buf, size_t size, off_t offset,fuse_req_t req,s
   off_t var = offset+size;
   i_st.st_size = std::max(i_st.st_size, var);
 
-  std::vector<write_data> vec_array;
+
 
   while (remaining_size>0)
   {
@@ -127,14 +127,12 @@ void RegInode::write(const char* buf, size_t size, off_t offset,fuse_req_t req,s
 
     size_t bytes_to_write = std::min(BLOCK_SIZE - block_offset, remaining_size);
     cown_ptr<Block> blk = data_blocks.at(blockId);
-
-    write_data wrapper(blk,bytes_to_write,block_offset,bytes_written,size,ptr);
-    vec_array.push_back(wrapper);
+    blk.allocated_cown->value.write(buf,bytes_to_write,block_offset,bytes_written);
 
     bytes_written += bytes_to_write;
     remaining_size -= bytes_to_write;
   }
-  batch_write(vec_array,req,size,ptr);
+    free((void *) buf);
 }
 
 
@@ -157,14 +155,7 @@ int RegInode::read( size_t size, off_t offset, fuse_req_t req)
     fuse_reply_buf(req, NULL, 0);
     return 0;
   }
-
-
-
-  u_int64_t total = remaining_size;
   char *buf = static_cast<char*>(malloc(sizeof(char) * remaining_size));
-
-  std::vector<read_data> wrapData;
-
 
   while (remaining_size > 0)
   {
@@ -178,53 +169,12 @@ int RegInode::read( size_t size, off_t offset, fuse_req_t req)
     }
     cown_ptr<Block> blk = data_blocks.at(blockId);
     size_t bytes_to_read = std::min((long)(BLOCK_SIZE - block_offset), remaining_size);
-    //blk->read(buf, bytes_to_read, block_offset, bytes_read);
-
-    read_data wrapper(blk,bytes_to_read,block_offset,bytes_read,size,buf);
-    wrapData.push_back(wrapper);
-
+    blk.allocated_cown->value.read(buf,bytes_to_read,block_offset,bytes_read);
     bytes_read += bytes_to_read;
     remaining_size -= bytes_to_read;
   }
-
-
-  if (wrapData.size() == 1) {
-    when (wrapData[0].ptr_) << [=](acquired_cown<Block> blk0) {
-      blk0->read(wrapData[0].read_buf_, wrapData[0].bytes_to_read_, wrapData[0].block_offset_, wrapData[0].bytes_read_);
-      fuse_reply_buf(req, buf, total);
-      free(buf);
-    };
-  }
-
-  if (wrapData.size() == 2) {
-    when (wrapData[0].ptr_, wrapData[1].ptr_) << [=](acquired_cown<Block> blk0, acquired_cown<Block> blk1) {
-      blk0->read(wrapData[0].read_buf_, wrapData[0].bytes_to_read_, wrapData[0].block_offset_, wrapData[0].bytes_read_);
-      blk0->read(wrapData[1].read_buf_, wrapData[1].bytes_to_read_, wrapData[1].block_offset_, wrapData[1].bytes_read_);
-      fuse_reply_buf(req, buf, total);
-      free(buf);
-    };
-  }
-
-  if (wrapData.size() == 3) {
-    when (wrapData[0].ptr_, wrapData[1].ptr_, wrapData[2].ptr_) << [=](acquired_cown<Block> blk0, acquired_cown<Block> blk1, acquired_cown<Block> blk2) {
-      blk0->read(wrapData[0].read_buf_, wrapData[0].bytes_to_read_, wrapData[0].block_offset_, wrapData[0].bytes_read_);
-      blk0->read(wrapData[1].read_buf_, wrapData[1].bytes_to_read_, wrapData[1].block_offset_, wrapData[1].bytes_read_);
-      blk0->read(wrapData[2].read_buf_, wrapData[2].bytes_to_read_, wrapData[2].block_offset_, wrapData[2].bytes_read_);
-      fuse_reply_buf(req, buf, total);
-      free(buf);
-    };
-  }
-
-  if (wrapData.size() == 4) {
-    when (wrapData[0].ptr_, wrapData[1].ptr_, wrapData[2].ptr_, wrapData[3].ptr_) << [=](acquired_cown<Block> blk0, acquired_cown<Block> blk1, acquired_cown<Block> blk2, acquired_cown<Block> blk3) {
-      blk0->read(wrapData[0].read_buf_, wrapData[0].bytes_to_read_, wrapData[0].block_offset_, wrapData[0].bytes_read_);
-      blk0->read(wrapData[1].read_buf_, wrapData[1].bytes_to_read_, wrapData[1].block_offset_, wrapData[1].bytes_read_);
-      blk0->read(wrapData[2].read_buf_, wrapData[2].bytes_to_read_, wrapData[2].block_offset_, wrapData[2].bytes_read_);
-      blk0->read(wrapData[3].read_buf_, wrapData[3].bytes_to_read_, wrapData[3].block_offset_, wrapData[3].bytes_read_);
-      fuse_reply_buf(req, buf, total);
-      free(buf);
-    };
-  }
+  fuse_reply_buf(req,buf,size);
+  free(buf);
   return 0;
 }
 
