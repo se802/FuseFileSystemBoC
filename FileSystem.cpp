@@ -898,6 +898,7 @@ int FileSystem::open(fuse_ino_t ino, int flags, FileHandle** fhp, uid_t uid, gid
 
     struct fuse_file_info copy = fi;
     copy.fh = reinterpret_cast<uint64_t>(fh.release());
+    copy.keep_cache = 1;
     fuse_reply_open(req, &copy);
     return 0;
   };

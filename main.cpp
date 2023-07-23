@@ -19,7 +19,7 @@ using namespace verona::cpp;
 
 
 
-#define PATH "/home/sevag/ssfs"
+#define PATH "/home/sevag/fuse_boc"
 
 
 short CorePin(int coreID)
