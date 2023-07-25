@@ -113,7 +113,7 @@ int main(int argc, char *argv[]) {
 
 
   Scheduler& sched = Scheduler::get();
-  sched.init(4);
+  sched.init(10);
   start_dispatcher(argc, argv, &harness);  // Pass the validated path argument
 
   sched.run();
