@@ -27,10 +27,10 @@ group_reporting=1
 iodepth=128
 fallocate=native
 runtime=120
-openfiles=24
 directory={dir_path}
+nrfiles={numfiles}
 [jobs1]
-filename={file_list}
+filename_format=f$filenum
 """
 
     file_template = "{file_number}"
@@ -44,6 +44,7 @@ filename={file_list}
         file_size=file_size,
         file_list=file_list,
         dir_path=file_path,
+        numfiles=num_files,
     )
 
     return config_content
@@ -65,11 +66,11 @@ def generate_config_file(config_list):
     with open(output_file, "w") as f:
         f.write(config_content)
 
-    #print(f"Configuration saved to '{output_file}'")
+    # print(f"Configuration saved to '{output_file}'")
     return output_file
 
 
-def run_fs(filesystem,jobs,files,size):
+def run_fs(filesystem, jobs, files, size):
     FS = None
     if filesystem == "fuse_boc":
         fs_stdout_logfile = open(f"fs_boc_stdout_{jobs}_{files}_{size}.log", 'w')
@@ -88,7 +89,8 @@ def run_fs(filesystem,jobs,files,size):
             stderr=fs_stderr_logfile
         )
         password = "1234"
-        subprocess.run("sudo -S chown sevag:sevag /home/sevag/fuse_ext4", shell=True, input=password, capture_output=True,
+        subprocess.run("sudo -S chown sevag:sevag /home/sevag/fuse_ext4", shell=True, input=password,
+                       capture_output=True,
                        text=True)
     elif filesystem == "ramdisk":
         password = "1234"
@@ -140,21 +142,19 @@ def unmount_dir(filesystem):
         print("Error executing the command:", completed_process.stderr)
 
 
-
-
-
 if __name__ == "__main__":
     # List of configurations, each sublist represents a configuration
     configurations = []
 
-
-    for num_files in  [1, 64, 128, 512, 1024]:
+    for num_files in [1, 64, 128, 512, 1024]:
         for io_size in ["4k", "32k", "128k", "512k"]:
             for operation in ["write", "randwrite", "read", "randread"]:
                 for num_threads in [1, 16, 32]:
                     for file_size in ["1G", "10G", "30G"]:
                         config = [io_size, operation, num_threads, num_files, "/home/sevag/ssfs/", file_size]
                         configurations.append(config)
+
+
 
     print("Settings:")
     print(configurations)
@@ -167,7 +167,7 @@ if __name__ == "__main__":
     lat_dict = {}
 
     for i in range(0, len(configurations), 4):
-        for filesystem in [ "fuse_boc", "fuse_ext4", "ramdisk", "tmpfs"]:
+        for filesystem in ["fuse_boc", "fuse_ext4", "ramdisk", "tmpfs"]:
             # for filesystem in ["fuse_boc"]:
             group = configurations[i:i + 4]
             io_size = group[0][0]
@@ -185,13 +185,13 @@ if __name__ == "__main__":
                     settings[4] = f"/tmp/ssfs/home/sevag/{filesystem}"
 
                 # run fs
-                FS = run_fs(filesystem,num_jobs,num_files,file_size)
+                FS = run_fs(filesystem, num_jobs, num_files, file_size)
 
                 # get name of .fio back
                 name = generate_config_file(settings)
 
                 # run fio
-                command = f"fio {name} > {name}_{filesystem}.out"
+                command = f"fio {name} > {name}_{filesystem}_{file_size}.out"
                 print(f"Command: {command}, FS: {filesystem}")
                 subprocess.run(['/bin/bash', '-c', command])
 
