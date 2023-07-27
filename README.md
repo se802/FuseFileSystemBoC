@@ -62,16 +62,6 @@ The project consists of the following files and directories:
 - `run.sh`: Shell script used to run the Verona-RT filesystem.
 
 
-## :muscle: Contributing
-
-We welcome contributions to this project!
-
-## :bulb: Acknowledgments
-
-The Verona FUSE Filesystem is built on the Verona concurrency model and inspired by ideas from various languages such as Rust, Cyclone, and Pony. We would like to thank the Project Verona team at Microsoft Research and the academic collaborators at Imperial College London for their valuable research and contributions.
-
-Please note that this project is still in its research phase and not intended for production use. Use it at your own risk.
-
 ## :blue_book: References
 
 - [Project Verona Official Website](https://www.microsoft.com/research/project/project-verona/)
