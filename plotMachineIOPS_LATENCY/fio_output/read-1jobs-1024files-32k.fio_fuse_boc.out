@@ -1,0 +1,28 @@
+jobs1: (g=0): rw=read, bs=(R) 32.0KiB-32.0KiB, (W) 32.0KiB-32.0KiB, (T) 32.0KiB-32.0KiB, ioengine=libaio, iodepth=128
+fio-3.28
+Starting 1 process
+jobs1: Laying out IO files (1024 files / total 30720MiB)
+fio: pid=1172943, err=24/file:filesetup.c:805, func=open(/home/sevag/fuse_boc//f1018), error=Too many open files
+
+jobs1: (groupid=0, jobs=1): err=24 (file:filesetup.c:805, func=open(/home/sevag/fuse_boc//f1018), error=Too many open files): pid=1172943: Wed Jul 26 09:33:03 2023
+  read: IOPS=6616, BW=207MiB/s (217MB/s)(31.8MiB/154msec)
+    slat (usec): min=82, max=325, avg=106.94, stdev=22.05
+    clat (usec): min=84, max=29649, avg=16909.66, stdev=3938.75
+     lat (usec): min=166, max=29976, avg=17017.03, stdev=3949.29
+    clat percentiles (usec):
+     |  1.00th=[ 1680],  5.00th=[ 7177], 10.00th=[14091], 20.00th=[17433],
+     | 30.00th=[17433], 40.00th=[17433], 50.00th=[17433], 60.00th=[17433],
+     | 70.00th=[17433], 80.00th=[17433], 90.00th=[18482], 95.00th=[22676],
+     | 99.00th=[26870], 99.50th=[28181], 99.90th=[29492], 99.95th=[29754],
+     | 99.99th=[29754]
+  lat (usec)   : 100=0.10%, 500=0.20%, 750=0.10%, 1000=0.20%
+  lat (msec)   : 2=0.69%, 4=1.47%, 10=4.22%, 20=85.77%, 50=7.26%
+  cpu          : usr=6.54%, sys=43.14%, ctx=2040, majf=0, minf=1049
+  IO depths    : 1=0.1%, 2=0.2%, 4=0.4%, 8=0.8%, 16=1.6%, 32=3.1%, >=64=93.8%
+     submit    : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.0%, >=64=0.0%
+     complete  : 0=0.0%, 4=99.9%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.0%, >=64=0.1%
+     issued rwts: total=1019,0,0,0 short=0,0,0,0 dropped=0,0,0,0
+     latency   : target=0, window=0, percentile=100.00%, depth=128
+
+Run status group 0 (all jobs):
+   READ: bw=207MiB/s (217MB/s), 207MiB/s-207MiB/s (217MB/s-217MB/s), io=31.8MiB (33.4MB), run=154-154msec

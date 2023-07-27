@@ -1,0 +1,31 @@
+jobs1: (g=0): rw=randwrite, bs=(R) 32.0KiB-32.0KiB, (W) 32.0KiB-32.0KiB, (T) 32.0KiB-32.0KiB, ioengine=libaio, iodepth=128
+fio-3.28
+Starting 1 process
+jobs1: Laying out IO files (1024 files / total 30720MiB)
+fio: pid=1169594, err=24/file:filesetup.c:805, func=open(/tmp/ssfs/home/sevag/fuse_ext4/f1014), error=Too many open files
+
+jobs1: (groupid=0, jobs=1): err=24 (file:filesetup.c:805, func=open(/tmp/ssfs/home/sevag/fuse_ext4/f1014), error=Too many open files): pid=1169594: Wed Jul 26 09:27:04 2023
+  write: IOPS=1503, BW=47.0MiB/s (49.3MB/s)(31.7MiB/675msec); 0 zone resets
+    slat (usec): min=29, max=101607, avg=378.49, stdev=4396.35
+    clat (usec): min=89, max=405229, avg=39860.40, stdev=23719.59
+     lat (usec): min=144, max=405312, avg=40239.46, stdev=26322.77
+    clat percentiles (msec):
+     |  1.00th=[    7],  5.00th=[   24], 10.00th=[   28], 20.00th=[   33],
+     | 30.00th=[   35], 40.00th=[   36], 50.00th=[   36], 60.00th=[   40],
+     | 70.00th=[   42], 80.00th=[   45], 90.00th=[   55], 95.00th=[   61],
+     | 99.00th=[   65], 99.50th=[  184], 99.90th=[  405], 99.95th=[  405],
+     | 99.99th=[  405]
+   bw (  KiB/s): min=22336, max=22336, per=46.42%, avg=22336.00, stdev= 0.00, samples=1
+   iops        : min=  698, max=  698, avg=698.00, stdev= 0.00, samples=1
+  lat (usec)   : 100=0.10%
+  lat (msec)   : 2=0.10%, 4=0.39%, 10=1.18%, 20=2.07%, 50=83.15%
+  lat (msec)   : 100=12.22%, 250=0.39%, 500=0.39%
+  cpu          : usr=1.78%, sys=12.46%, ctx=1092, majf=0, minf=18
+  IO depths    : 1=0.1%, 2=0.2%, 4=0.4%, 8=0.8%, 16=1.6%, 32=3.2%, >=64=93.8%
+     submit    : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.0%, >=64=0.0%
+     complete  : 0=0.0%, 4=99.9%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.0%, >=64=0.1%
+     issued rwts: total=0,1015,0,0 short=0,0,0,0 dropped=0,0,0,0
+     latency   : target=0, window=0, percentile=100.00%, depth=128
+
+Run status group 0 (all jobs):
+  WRITE: bw=47.0MiB/s (49.3MB/s), 47.0MiB/s-47.0MiB/s (49.3MB/s-49.3MB/s), io=31.7MiB (33.3MB), run=675-675msec

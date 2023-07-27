@@ -1,0 +1,5 @@
+Harness starting.
+ /home/sevag/CLionProjects/FuseFileSystemBoC/cmake-build-release/FuseFileSystemBoC --seed 3020388685
+
+Pinning to Core:40
+creating 512 mb file systemoffset 0 and length 32212254720 for ino 139776590250000

@@ -1,0 +1,29 @@
+jobs1: (g=0): rw=randwrite, bs=(R) 32.0KiB-32.0KiB, (W) 32.0KiB-32.0KiB, (T) 32.0KiB-32.0KiB, ioengine=libaio, iodepth=128
+...
+fio-3.28
+Starting 32 processes
+jobs1: Laying out IO files (1024 files / total 30720MiB)
+fio: pid=1172725, err=24/file:filesetup.c:805, func=open(/home/sevag/tmpfs//f1018), error=Too many open files
+
+jobs1: (groupid=0, jobs=32): err=24 (file:filesetup.c:805, func=open(/home/sevag/tmpfs//f1018), error=Too many open files): pid=1172725: Wed Jul 26 09:31:39 2023
+  write: IOPS=50.9k, BW=1592MiB/s (1670MB/s)(31.8MiB/20msec); 0 zone resets
+    slat (nsec): min=8560, max=36920, avg=12743.93, stdev=2829.02
+    clat (usec): min=38, max=3291, avg=2269.61, stdev=650.99
+     lat (usec): min=49, max=3309, avg=2282.54, stdev=653.33
+    clat percentiles (usec):
+     |  1.00th=[  269],  5.00th=[  840], 10.00th=[ 1549], 20.00th=[ 1795],
+     | 30.00th=[ 2024], 40.00th=[ 2442], 50.00th=[ 2442], 60.00th=[ 2442],
+     | 70.00th=[ 2442], 80.00th=[ 2573], 90.00th=[ 3195], 95.00th=[ 3261],
+     | 99.00th=[ 3294], 99.50th=[ 3294], 99.90th=[ 3294], 99.95th=[ 3294],
+     | 99.99th=[ 3294]
+  lat (usec)   : 50=0.10%, 250=0.79%, 500=1.77%, 750=1.67%, 1000=1.77%
+  lat (msec)   : 2=23.45%, 4=70.46%
+  cpu          : usr=0.00%, sys=100.00%, ctx=0, majf=0, minf=68
+  IO depths    : 1=0.1%, 2=0.2%, 4=0.4%, 8=0.8%, 16=1.6%, 32=3.1%, >=64=93.8%
+     submit    : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.0%, >=64=0.0%
+     complete  : 0=0.0%, 4=99.9%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.0%, >=64=0.1%
+     issued rwts: total=0,1019,0,0 short=0,0,0,0 dropped=0,0,0,0
+     latency   : target=0, window=0, percentile=100.00%, depth=128
+
+Run status group 0 (all jobs):
+  WRITE: bw=1592MiB/s (1670MB/s), 1592MiB/s-1592MiB/s (1670MB/s-1670MB/s), io=31.8MiB (33.4MB), run=20-20msec
