@@ -30,8 +30,8 @@ The main purpose of this project is to analyze and compare the performance of di
 3. Clone this repository:
 
     ```bash
-    git clone https://github.com/your-username/your-repo.git
-    cd your-repo
+    git clone git@github.com:se802/FuseFileSystemBoC.git
+    cd FuseFileSystemBoc/plotMachineIOPS_LATENCY
     ```
 
 ## Usage
