@@ -70,13 +70,4 @@ The project relies on the following dependencies:
 
 Make sure to install these packages before running the scripts.
 
-## License
 
-This project is licensed under the [MIT License](LICENSE).
-
-## Contact
-
-For any questions or issues related to this project, feel free to contact us at:
-
-- Your Name: your.email@example.com
-- Project Repository: [https://github.com/your-username/your-repo](https://github.com/your-username/your-repo)
