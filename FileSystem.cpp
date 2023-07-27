@@ -1134,7 +1134,7 @@ void FileSystem::my_fallocate(fuse_req_t req, fuse_ino_t ino, int mode, off_t of
   it->acquire_strong_from_weak();
   cown_ptr<RegInode> regInode = cown_ptr<RegInode>(it);
 
-  printf("offset %ld and length %ld for ino %lu\n",offset,length,ino);
+  //printf("offset %ld and length %ld for ino %lu\n",offset,length,ino);
   when(regInode) << [=](auto in){
     for(off_t i=offset;i<offset+length;i+=BLOCK_SIZE){
       off_t block_id = i/BLOCK_SIZE;
