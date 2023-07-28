@@ -14,6 +14,8 @@ The main purpose of this project is to analyze and compare the performance of di
     ```bash
     # Install the necessary Python packages
     pip install psutil matplotlib
+    # Increase the number of open file descriptors supported by the system 
+    ulimit -n 30000
     ```
 
 2. Ensure that FIO (Flexible I/O Tester) is installed on your system. You can download and install it from [https://fio.github.io/fio/](https://fio.github.io/fio/).
