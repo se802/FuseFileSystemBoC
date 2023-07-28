@@ -9,7 +9,12 @@ from matplotlib import cm
 
 
 def run_fs():
-    FS = subprocess.Popen(["/home/sevag/CLionProjects/FuseFileSystemBoC/cmake-build-release/FuseFileSystemBoC"])
+    FS = None
+    with open(os.devnull, 'w') as null_output:
+        FS = subprocess.Popen(
+            ["/home/sevag/CLionProjects/FuseFileSystemBoC/cmake-build-release/FuseFileSystemBoC"]
+        )
+    time.sleep(2)
     return FS
 
 
@@ -59,11 +64,17 @@ def run_cpp_program(num_workers, lat_dict, iops_dict):
     for io_type in ["write", "randwrite", "read", "randread"]:
         FS = run_fs()
 
+        if os.path.exists(f"workload_{io_type}.json"):
+            # If the file exists, delete it
+            os.remove(f"workload_{io_type}.json")
+
         # run fio
         # --output test --output-format=json
         command = f"fio workload_{io_type}.fio --output workload_{io_type}.json --output-format=json"
-        # print(f"Command: {command}, FS: {filesystem}")
+        print(f"Command: {command}")
         subprocess.run(['/bin/bash', '-c', command])
+
+
 
         with open(f"workload_{io_type}.json", "r") as file:
             json_data = file.read()
@@ -71,9 +82,10 @@ def run_cpp_program(num_workers, lat_dict, iops_dict):
         # Parse the JSON data
         data = json.loads(json_data)
         x = "write" if io_type == "write" or io_type == "randwrite" else "read"
-        print(x)
+
         if x == "read":
-            print("aa")
+            print('Read: ')
+
         iops = data["jobs"][0][x]["iops"]
         clat_ns_mean = data["jobs"][0][x]["clat_ns"]["mean"]
 
@@ -101,6 +113,7 @@ def main():
 
     plot_data(iops_dict)
     plot_data(lat_dict)
+    print(iops_dict)
 
 
 if __name__ == "__main__":

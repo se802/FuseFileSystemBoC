@@ -4,11 +4,15 @@ ioengine=libaio
 readwrite=randread
 size=10G
 name=test
-numjobs=10
+numjobs=8
 group_reporting=1
 iodepth=128
 fallocate=native
 directory=/home/sevag/fuse_boc/
-nrfiles=128
+nrfiles=16
 [jobs1]
 filename_format=f$filenum
+
+
+
+
