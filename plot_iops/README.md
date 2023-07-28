@@ -32,7 +32,7 @@ The main purpose of this project is to analyze and compare the performance of di
 2. Run the first script:
 
     ```bash
-    python generate_fio_configs.py
+    python generate_configure_file.py
     ```
 
     This script will generate FIO configurations, run FIO tests on different filesystems, and save the results as pickle files.
@@ -40,10 +40,14 @@ The main purpose of this project is to analyze and compare the performance of di
 3. Once the first script completes, run the second script `generate_comparison_charts.py` to process the pickle files and create comparison charts:
 
     ```bash
-    python generate_comparison_charts.py
+    python generate_graphs.py
     ```
 
 4. The comparison charts will be saved in the same directory as PNG files.
+5. To organize the PNG files in the directory structure: File Size -> Number of Files -> # of threads perfoming IO -> Block Size. Run the script:
+   ```bash
+    python organize_to_dirs.py
+    ```  
 
 ## Configuration
 
