@@ -31,21 +31,15 @@ The main purpose of this project is to analyze and compare the performance of di
 
 1. Configure the settings in the first script `generate_fio_configs.py` to define the combinations of I/O operations, filesystems, and configurations you want to test.
 
-2. Run the first script:
+2. Run the  script:
 
     ```bash
     python generate_fio_configs.py
     ```
 
-    This script will generate FIO configurations, run FIO tests on different filesystems, and save the results as pickle files.
+    This script will generate FIO configurations, run FIO tests on different filesystems, and save the results as pickle files. It then processes the pickle files and the comparison charts are saved in the same directory as PNG files.
 
-3. Once the first script completes, run the second script `generate_comparison_charts.py` to process the pickle files and create comparison charts:
 
-    ```bash
-    python generate_comparison_charts.py
-    ```
-
-4. The comparison charts will be saved in the same directory as PNG files.
 
 ## Configuration
 
