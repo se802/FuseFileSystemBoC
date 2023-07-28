@@ -17,8 +17,6 @@ Ensure you have the following dependencies installed:
 Clone this repository to your local machine:
 
 ```bash
-git clone https://github.com/your_username/your_repository.git
-cd your_repository
 
 ## Configuration
 
