@@ -34,7 +34,7 @@ To run the benchmarking script, execute the following command:
 python benchmark_filesystem.py
 ```
 
-The benchmarking script executes the C++ program with different worker counts and various I/O types (write, randwrite, read, randread). It collects IOPS and latency data for each case and generates two grouped bar charts as the output:
+The benchmarking script executes the BoC Fuse Filesystem with different verona worker counts and various I/O types (write, randwrite, read, randread). It collects IOPS and latency data for each case and generates two grouped bar charts for each worker count. 
 
 - **IOPS Comparison Chart**: Shows IOPS achieved for different I/O types and worker counts.
 - **Latency Comparison Chart**: Displays average completion time (latency) for each I/O type and worker count.
