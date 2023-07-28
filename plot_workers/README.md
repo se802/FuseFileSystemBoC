@@ -30,7 +30,7 @@ If needed, update the path to the FuseFileSystemBoC executable in the `run_fs()`
 
 To run the benchmarking script, execute the following command:
 
-```bash
+
 python benchmark_filesystem.py
 ```
 
