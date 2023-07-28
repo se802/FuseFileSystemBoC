@@ -24,6 +24,10 @@ The main purpose of this project is to analyze and compare the performance of di
     git clone git@github.com:se802/FuseFileSystemBoC.git
     cd FuseFileSystemBoc/plotMachineIOPS_LATENCY
     ```
+4. Increase the limit of open file descriptors:
+    ```bash
+    ulimit -n 30000
+    ```
 
 ## Usage
 
