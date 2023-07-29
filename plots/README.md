@@ -27,6 +27,18 @@ The `plot_iops/charts/Performance_Data` directory contains performance data plot
   - IOPS Comparison: ![Link to IOPS Comparison Plot](./plot_iops/charts/Performance_Data/10G/128/16/4k/iops_comparison_16jobs_128files_10Gfilesize_4kblocksize.png)
   - Latency Comparison: ![Link to Latency Comparison Plot](./plot_iops/charts/Performance_Data/10G/128/16/4k/latency_comparison_16jobs_128files_10Gfilesize_4kblocksize.png)
 
+In the `plot_metadata` directory you can find the results for the metadata operations([File Creation](https://fio.readthedocs.io/en/latest/fio_doc.html#i-o-engine), [File Deletion](https://fio.readthedocs.io/en/latest/fio_doc.html#i-o-engine), [Stat on Files](https://fio.readthedocs.io/en/latest/fio_doc.html#i-o-engine))
+
+- **IOPS Comparison: 1G/1024/32**
+  - This plot compares the Input/Output Operations Per Second (IOPS) achieved during the file creation of 1024 files. The configurations are the following:
+    - File Size: 1G (1 Gigabyte)
+    - Number of Files: 1024
+    - Number of Jobs: 32
+    - Block Size: 1024 (bytes)
+    - Operation: File Create
+  
+  ![IOPS Comparison - 1G/1024/32](./charts/Performance_Data/1G/1024/32/IOPS_comparison_jobs-32_files-1024_size-1G_operation-filecreate.png)
+
 
 ## How to Reproduce the Evaluation
 
