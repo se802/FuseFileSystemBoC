@@ -59,7 +59,7 @@ In the `plot_metadata` directory:
     - Block Size: 1024 (bytes)
     - Operation: File Create
   
-  ![IOPS Comparison - 1G/1024/32](./plot_metadata/charts/Performance_Data/1G/1024/32/IOPS_comparison_jobs-32_files-1024_size-1G_operation-filecreate.png)
+  ![IOPS Comparison - 1G/1024/32](./charts/Performance_Data/1G/1024/32/IOPS_comparison_jobs-32_files-1024_size-1G_operation-filecreate.png)
 
 
 
