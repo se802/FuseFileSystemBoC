@@ -47,6 +47,23 @@ The main purpose of this project is to analyze and compare the performance of di
 
 - The `generate_comparison_charts.py` script performs data processing and chart generation based on the generated pickle files. You can adjust visualization settings and data processing options in this script if required.
 
+### Evaluation results
+
+In the `plot_metadata` directory:
+
+- **IOPS Comparison: 1G/1024/32**
+  - This plot compares the Input/Output Operations Per Second (IOPS) achieved during different experiments with the following configuration:
+    - File Size: 1G (1 Gigabyte)
+    - Number of Files: 1024
+    - Number of Jobs: 32
+    - Block Size: 1024 (bytes)
+    - Operation: File Create
+  
+  ![IOPS Comparison - 1G/1024/32](./plot_metadata/charts/Performance_Data/1G/1024/32/IOPS_comparison_jobs-32_files-1024_size-1G_operation-filecreate.png)
+
+
+
+
 ## Dependencies
 
 The project relies on the following dependencies:
