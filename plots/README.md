@@ -13,13 +13,13 @@ Provide an overview of the project and its purpose. Mention the context of the e
 This directory contains various plot files that illustrate the results of the evaluation. Each plot corresponds to a specific aspect of the evaluation. The following files are available:
 
 - **Impact of Batch Size on IOPS Improvement in IO_uring**
-  - ![Impact of Batch Size on IOPS Improvement](./plots/impact_of_batch_size_on_iops_improvement_in_io_uring.png)
+  - ![Impact of Batch Size on IOPS Improvement](./impact_of_batch_size_on_iops_improvement_in_io_uring.png)
 
 - **Latency Comparison: 1 Dispatcher vs. Multiple Dispatchers vs. BoC Implementation**
-  - ![Latency Comparison](./plots/latency_comparison_1_dispatcher_vs_multiple_dispatchers_no_processing_time_vs_boc_implementation.png)
+  - ![Latency Comparison](./latency_comparison_1_dispatcher_vs_multiple_dispatchers_no_processing_time_vs_boc_implementation.png)
 
 - **Maximum IOPS Comparison: 1 Dispatcher vs. Multiple Dispatchers vs. BoC Implementation**
-  - ![Maximum IOPS Comparison](./plots/maximum_iops_comparison_1_dispatcher_vs_multiple_dispatchers_no_processing_time_vs_boc_implementation.png)
+  - ![Maximum IOPS Comparison](./maximum_iops_comparison_1_dispatcher_vs_multiple_dispatchers_no_processing_time_vs_boc_implementation.png)
 
 ### How to Navigate
 
