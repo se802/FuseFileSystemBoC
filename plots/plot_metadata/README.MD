@@ -52,7 +52,7 @@ The main purpose of this project is to analyze and compare the performance of di
 In the `plot_metadata` directory:
 
 - **IOPS Comparison: 1G/1024/32**
-  - This plot compares the Input/Output Operations Per Second (IOPS) achieved during different experiments with the following configuration:
+  - This plot compares the Input/Output Operations Per Second (IOPS) achieved during the file creation of 1024 files. The configurations are the following:
     - File Size: 1G (1 Gigabyte)
     - Number of Files: 1024
     - Number of Jobs: 32
