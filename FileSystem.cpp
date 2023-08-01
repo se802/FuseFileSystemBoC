@@ -907,8 +907,6 @@ int FileSystem::open(fuse_ino_t ino, int flags, FileHandle** fhp, uid_t uid, gid
 
 ssize_t FileSystem::write(FileHandle* fh, const char* buf, size_t size, off_t off, struct fuse_file_info* fi, fuse_req_t req, char *ptr,fuse_ino_t ino)
 {
-
-
   ino--;
 
   auto allocated_cown = reinterpret_cast<ActualCown<RegInode>*>(ino);
@@ -916,14 +914,8 @@ ssize_t FileSystem::write(FileHandle* fh, const char* buf, size_t size, off_t of
   cown_ptr<RegInode> reg_inode = cown_ptr<RegInode>(allocated_cown);
 
   when(reg_inode) << [=](acquired_cown<RegInode> reg_in){
-
-      char * copy = static_cast<char *>(malloc(size));
-      memcpy(copy,buf,size);
-      fuse_reply_write(req,size);
-
-
-      reg_in->write(copy,size,off,req,avail_bytes_, nullptr);
-    return 0;
+      reg_in->write(buf,size,off,req,avail_bytes_, nullptr);
+      return 0;
   };
 
   return 0;
