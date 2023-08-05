@@ -7,7 +7,7 @@
 #include <cstdlib>                // Standard library functions
 
 // FUSE Libraries
-#include "my_fuse_loop.h"         // Custom FUSE loop implementation
+#include "my_fuse_loop.h"
 #include <fuse3/fuse_opt.h>       // FUSE library options
 
 // Filesystem Data Structures
@@ -92,7 +92,7 @@ void start_dispatcher(int argc, char* argv[], SystematicTestHarness* harness) {
       fuse_session_mount(se, mountpoint);
       fuse_daemonize(true);
 
-      fuse_session_loop(se);
+      my_fuse_session_loop(se);
 
       fuse_session_unmount(se);
       fuse_remove_signal_handlers(se);

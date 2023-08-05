@@ -44,4 +44,27 @@ public:
   std::map<off_t, cown_ptr<Block>> data_blocks;
 };
 
+
+struct my_fuse_req {
+    struct fuse_session *se;
+    uint64_t unique;
+    int ctr;
+    pthread_mutex_t lock;
+    struct fuse_ctx ctx;
+    struct fuse_chan *ch;
+    int interrupted;
+    unsigned int ioctl_64bit : 1;
+    union {
+        struct {
+            uint64_t unique;
+        } i;
+        struct {
+            fuse_interrupt_func_t func;
+            void *data;
+        } ni;
+    } u;
+    struct fuse_req *next;
+    struct fuse_req *prev;
+};
+
 #endif // VERONA_RT_ALL_REGINODE_H

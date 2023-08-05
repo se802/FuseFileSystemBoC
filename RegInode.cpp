@@ -3,7 +3,7 @@
 //
 
 #include "RegInode.h"
-
+#include "my_fuse_loop.h"
 
 
 class Counter {
@@ -132,7 +132,13 @@ void RegInode::write(const char* buf, size_t size, off_t offset,fuse_req_t req,s
     bytes_written += bytes_to_write;
     remaining_size -= bytes_to_write;
   }
-    free((void *) buf);
+
+  auto end = std::time(nullptr);
+  auto start = write_time[req->unique];
+  fuse_reply_buf(req,buf,size);
+  time_t duration = end - start;
+  write_time[req->unique] = duration;
+  free((void *) buf);
 }
 
 
@@ -172,8 +178,13 @@ int RegInode::read( size_t size, off_t offset, fuse_req_t req)
     blk.allocated_cown->value.read(buf,bytes_to_read,block_offset,bytes_read);
     bytes_read += bytes_to_read;
     remaining_size -= bytes_to_read;
+
   }
+  auto end = std::time(nullptr);
+  auto start = read_time[req->unique];
   fuse_reply_buf(req,buf,size);
+  time_t duration = end - start;
+  read_time[req->unique] = duration;
   free(buf);
   return 0;
 }

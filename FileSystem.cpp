@@ -118,7 +118,7 @@ void FileSystem::init(void* userdata, struct fuse_conn_info* conn)
 int FileSystem::lookup(fuse_ino_t parent_ino, const std::string& name, fuse_req_t req)
 {
 
-  //std::cout << "in lookup for ino " << parent_ino << std::endl;
+  std::cout << "in lookup for ino " << parent_ino << std::endl;
   //while(1);
   cown_ptr<DirInode> parent_in = nullptr;
   if(parent_ino == 1)
@@ -907,7 +907,7 @@ int FileSystem::open(fuse_ino_t ino, int flags, FileHandle** fhp, uid_t uid, gid
 
 ssize_t FileSystem::write(FileHandle* fh, const char* buf, size_t size, off_t off, struct fuse_file_info* fi, fuse_req_t req, char *ptr,fuse_ino_t ino)
 {
-
+  std::cout << "In write for ino: " << ino << "and data: " << buf << std::endl;
 
   ino--;
 
