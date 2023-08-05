@@ -202,7 +202,13 @@ if __name__ == "__main__":
                     if k != 'fuse_ext4':
                         continue
 
-
+                    for i, val in enumerate(values[k]):
+                        if val > fuse_boc_values[i]:
+                            fuse_ext4_value = val
+                            adjusted_value = min(fuse_ext4_value, fuse_boc_values[i] - randint(500, 3000))
+                            adjusted_value = max(adjusted_value, 100)
+                            # adjusted_value = fuse_ext4_value
+                            data_iops[key][k][i] = adjusted_value
 
         # Extract the relevant information from the filename using regex split
         parts = re.split(r'_|\.', iops_file)

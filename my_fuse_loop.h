@@ -17,8 +17,8 @@
 #include <sys/ioctl.h>
 #include <unistd.h>
 
-#define QUEUE_DEPTH 32
-#define BATCH_SIZE 32
+#define QUEUE_DEPTH 8
+#define BATCH_SIZE 4
 
 
 

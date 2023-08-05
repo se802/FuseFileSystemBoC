@@ -92,7 +92,7 @@ void start_dispatcher(int argc, char* argv[], SystematicTestHarness* harness) {
       fuse_session_mount(se, mountpoint);
       fuse_daemonize(true);
 
-      fuse_session_loop_uring(se);
+      fuse_session_loop(se);
 
       fuse_session_unmount(se);
       fuse_remove_signal_handlers(se);
