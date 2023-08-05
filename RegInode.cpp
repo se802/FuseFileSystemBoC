@@ -135,7 +135,6 @@ void RegInode::write(const char* buf, size_t size, off_t offset,fuse_req_t req,s
 
   auto end = std::time(nullptr);
   auto start = write_time[req->unique];
-  fuse_reply_buf(req,buf,size);
   time_t duration = end - start;
   write_time[req->unique] = duration;
   free((void *) buf);

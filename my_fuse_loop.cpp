@@ -131,8 +131,12 @@ int my_fuse_session_loop(struct fuse_session *se) {
             break;
         struct my_fuse_in_header *in = static_cast<struct my_fuse_in_header *>(fbuf.mem);
         std::cout << "Opcode is: " << in->opcode << std::endl;
-        write_time[in->opcode] = start;
-        read_time[in->opcode] = start;
+        if(in->opcode==16)
+            write_time[in->opcode] = start;
+
+        if(in->opcode==15)
+            read_time[in->opcode] = start;
+
         fuse_session_process_buf(se, &fbuf);
     }
 }
