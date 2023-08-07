@@ -102,7 +102,7 @@ def create_filesystem_comparison_chart(data, num_jobs, num_files, file_size, io_
     ax.set_xlabel('I/O type')
     ax.set_ylabel('IOPS ')
     ax.set_title(
-        f'Comparison of Latency for {num_jobs} jobs, {num_files} files and  and IO {io_size}, each file = {file_size}/{num_files}\nFilesystem types: {", ".join(filesystems)}')
+        f'Comparison of IOPS for {num_jobs} jobs, {num_files} files and  and IO {io_size}, each file = {file_size}/{num_files}\nFilesystem types: {", ".join(filesystems)}')
     ax.set_xticks([pos + 1.5 * bar_width for pos in index])
     ax.set_xticklabels(metrics)
     ax.legend()
@@ -157,7 +157,7 @@ def create_filesystem_comparison_chart_latency(data, num_jobs, num_files, measur
     ax.set_xlabel('I/O type')
     ax.set_ylabel(f"Latency ({measure})")
     ax.set_title(
-        f'Comparison of IOPS for {num_jobs} jobs, {num_files} files and  and IO {io_size}, each file = {file_size}/{num_files}\nFilesystem types: {", ".join(filesystems)}')
+        f'Comparison of Latency for {num_jobs} jobs, {num_files} files and  and IO {io_size}, each file = {file_size}/{num_files}\nFilesystem types: {", ".join(filesystems)}')
     ax.set_xticks([pos + 1.5 * bar_width for pos in index])
     ax.set_xticklabels(metrics)
     ax.legend()
