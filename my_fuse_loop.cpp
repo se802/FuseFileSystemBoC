@@ -134,7 +134,9 @@ void sigint_handler(int signum) {
 
 
     auto IOPS = totalIOPS / elapsed_time ;
-
+    std::cout  << "IOPS: " << IOPS << std::endl;
+    std::cout  << "Write Latency: " << average_write_latency << std::endl;
+    std::cout  << "Read Latency: " << average_read_latency << std::endl;
     printf("aaa");
 
 }

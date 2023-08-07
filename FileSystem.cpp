@@ -936,7 +936,7 @@ ssize_t FileSystem::read(FileHandle* fh, off_t offset, size_t size, fuse_req_t r
 {
   //std::cout << "Offset: " << offset << " Size: " << size << std::endl;
   ino--;
-  std::cout << "My Read unique: " << req->unique << std::endl;
+  //std::cout << "My Read unique: " << req->unique << std::endl;
   auto allocated_cown = reinterpret_cast<ActualCown<RegInode>*>(ino);
   allocated_cown->acquire_strong_from_weak();
   cown_ptr<RegInode> reg_inode = cown_ptr<RegInode>(allocated_cown);
