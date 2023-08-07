@@ -22,7 +22,7 @@ def kill_fs(FS):
     FS.kill()
 
 
-def plot_data(data):
+def plot_data(data,type):
     # Extract the list of worker counts from the 'data' dictionary dynamically
     num_workers_list = list(data.keys())
 
@@ -54,7 +54,7 @@ def plot_data(data):
     plt.xticks(index + bar_width * (num_bars - 1) / 2, io_types)
     plt.legend()
     plt.grid(True)
-    plt.savefig("workers_comparison.png")
+    plt.savefig(f"{type}_workers_comparison.png")
     plt.show()
 
 
@@ -111,8 +111,8 @@ def main():
     for num_workers in num_workers_list:
         run_cpp_program(num_workers, lat_dict, iops_dict)
 
-    plot_data(iops_dict)
-    plot_data(lat_dict)
+    plot_data(iops_dict, "IOPS")
+    plot_data(lat_dict, "latency")
     print(iops_dict)
 
 
