@@ -38,7 +38,7 @@ public:
 
   ~RegInode() override;
 
-  void write(const char *buf,size_t size,off_t offset,fuse_req_t req, std::atomic<size_t >&avail_bytes, char *ptr);
+  void write(const char *buf,size_t size,off_t offset,fuse_req_t req, std::atomic<size_t >&avail_bytes, char *ptr,uint64_t unique);
   int read(size_t size,off_t offset,fuse_req_t req);
   int allocate_space(uint64_t blockID, std::atomic<size_t> &avail_bytes);
   std::map<off_t, cown_ptr<Block>> data_blocks;

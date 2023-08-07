@@ -1,6 +1,9 @@
 #define TIMEOUT  86400.0
 
 #include "FileSystem.h"
+#include "my_fuse_loop.h"
+
+
 void FileSystem::init_stat(fuse_ino_t ino, time_t time, uid_t uid, gid_t gid, blksize_t blksize, mode_t mode,struct stat *i_st,bool is_regular)
 {
   memset(i_st, 0, sizeof(struct stat));
@@ -118,7 +121,7 @@ void FileSystem::init(void* userdata, struct fuse_conn_info* conn)
 int FileSystem::lookup(fuse_ino_t parent_ino, const std::string& name, fuse_req_t req)
 {
 
-  std::cout << "in lookup for ino " << parent_ino << std::endl;
+  //std::cout << "in lookup for ino " << parent_ino << std::endl;
   //while(1);
   cown_ptr<DirInode> parent_in = nullptr;
   if(parent_ino == 1)
@@ -907,10 +910,10 @@ int FileSystem::open(fuse_ino_t ino, int flags, FileHandle** fhp, uid_t uid, gid
 
 ssize_t FileSystem::write(FileHandle* fh, const char* buf, size_t size, off_t off, struct fuse_file_info* fi, fuse_req_t req, char *ptr,fuse_ino_t ino)
 {
-  std::cout << "In write for ino: " << ino << "and data: " << buf << std::endl;
+  //std::cout << "In write for ino: " << ino << "and data: " << buf << std::endl;
 
   ino--;
-
+  auto unique = req->unique;
   auto allocated_cown = reinterpret_cast<ActualCown<RegInode>*>(ino);
   allocated_cown->acquire_strong_from_weak();
   cown_ptr<RegInode> reg_inode = cown_ptr<RegInode>(allocated_cown);
@@ -922,7 +925,7 @@ ssize_t FileSystem::write(FileHandle* fh, const char* buf, size_t size, off_t of
       fuse_reply_write(req,size);
 
 
-      reg_in->write(copy,size,off,req,avail_bytes_, nullptr);
+      reg_in->write(copy,size,off,req,avail_bytes_, nullptr,unique);
     return 0;
   };
 
@@ -933,6 +936,7 @@ ssize_t FileSystem::read(FileHandle* fh, off_t offset, size_t size, fuse_req_t r
 {
   //std::cout << "Offset: " << offset << " Size: " << size << std::endl;
   ino--;
+  std::cout << "My Read unique: " << req->unique << std::endl;
   auto allocated_cown = reinterpret_cast<ActualCown<RegInode>*>(ino);
   allocated_cown->acquire_strong_from_weak();
   cown_ptr<RegInode> reg_inode = cown_ptr<RegInode>(allocated_cown);

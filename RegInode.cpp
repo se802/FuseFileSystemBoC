@@ -91,8 +91,10 @@ void batch_write(const std::vector<write_data>& blocks, fuse_req_t req, size_t s
 }
 
 
-void RegInode::write(const char* buf, size_t size, off_t offset,fuse_req_t req,std::atomic<size_t >&avail_bytes, char *ptr)
+void RegInode::write(const char* buf, size_t size, off_t offset,fuse_req_t req,std::atomic<size_t >&avail_bytes, char *ptr,uint64_t unique)
 {
+  write_ops[pthread_self()]++;
+
   auto now = std::time(nullptr);
   i_st.st_ctime = now;
   i_st.st_mtime = now;
@@ -133,10 +135,11 @@ void RegInode::write(const char* buf, size_t size, off_t offset,fuse_req_t req,s
     remaining_size -= bytes_to_write;
   }
 
-  auto end = std::time(nullptr);
-  auto start = write_time[req->unique];
-  time_t duration = end - start;
-  write_time[req->unique] = duration;
+  auto end = std::chrono::high_resolution_clock::now();
+  auto start = writeStartTime[unique];
+  auto duration = end -start;
+  write_time[unique] = duration;
+
   free((void *) buf);
 }
 
@@ -147,7 +150,7 @@ void RegInode::write(const char* buf, size_t size, off_t offset,fuse_req_t req,s
 //FIXME: What if someone does lseek(fd,1000,SEEK_CUR) --> write(fd,"a",1), and someone tries to read from offset 0? what will it return
 int RegInode::read( size_t size, off_t offset, fuse_req_t req)
 {
-
+  read_ops[pthread_self()]++;
   // Calculate the block ID based on the offset
   u_int64_t bytes_read = 0;
   u_int64_t blockId;
@@ -179,12 +182,13 @@ int RegInode::read( size_t size, off_t offset, fuse_req_t req)
     remaining_size -= bytes_to_read;
 
   }
-  auto end = std::time(nullptr);
-  auto start = read_time[req->unique];
-  fuse_reply_buf(req,buf,size);
-  time_t duration = end - start;
-  read_time[req->unique] = duration;
-  free(buf);
+    auto unique = req->unique;
+    fuse_reply_buf(req, buf, size);
+    auto end = std::chrono::high_resolution_clock::now();
+    auto start = readStartTime[unique];
+    auto duration = end -start;
+    read_time[unique] = duration;
+    free(buf);
   return 0;
 }
 

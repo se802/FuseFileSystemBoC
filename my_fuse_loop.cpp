@@ -4,8 +4,17 @@
 volatile sig_atomic_t stop = 0;
 struct fuse_session *my_se;
 FILE *my_log_file;
-std::unordered_map<uint64_t, time_t> write_time;
-std::unordered_map<uint64_t, time_t> read_time;
+std::unordered_map<uint64_t, std::chrono::high_resolution_clock::time_point> writeStartTime;
+std::unordered_map<uint64_t, std::chrono::high_resolution_clock::time_point> readStartTime;
+
+
+std::unordered_map<uint64_t,std::chrono::nanoseconds> write_time;
+std::unordered_map<uint64_t,std::chrono::nanoseconds> read_time;
+
+
+
+std::unordered_map<pthread_t,uint64_t> write_ops;
+std::unordered_map<pthread_t,uint64_t> read_ops;
 
 int my_fuse_session_receive_buf_int(struct fuse_session *se, struct fuse_buf *buf,
                                     struct fuse_chan *ch,struct io_uring *ring)
@@ -90,6 +99,7 @@ void sigint_handler(int signum) {
     }
 
     // Discard init
+    auto start = std::chrono::high_resolution_clock::now();
     read_request_from_log(log_file, &fbuf.mem, &request_len);
     while (read_request_from_log(log_file, &fbuf.mem, &request_len)) {
         // Process the request
@@ -98,6 +108,35 @@ void sigint_handler(int signum) {
         //process_request(request, request_len);
         free(fbuf.mem); // Free the allocated memory for the request
     }
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> elapsed_seconds = end - start;
+    double elapsed_time = elapsed_seconds.count();
+    uint64_t totalIOPS = 0;
+    // Iterate through the unordered_map using range-based for loop (C++11 and later)
+    for (const auto& pair : write_ops) {
+        // 'pair.first' will be the key (pthread_t) and 'pair.second' will be the value (uint64_t)
+        totalIOPS += pair.second;
+    }
+
+    // Compute the average write latency
+    std::chrono::nanoseconds total_write_latency = std::chrono::nanoseconds(0);
+    for (auto it = write_time.begin(); it != write_time.end(); ++it) {
+        total_write_latency += it->second;
+    }
+    double average_write_latency = static_cast<double>(total_write_latency.count()) / write_time.size();
+
+    // Compute the average read latency
+    std::chrono::nanoseconds total_read_latency = std::chrono::nanoseconds(0);
+    for (auto it = read_time.begin(); it != read_time.end(); ++it) {
+        total_read_latency += it->second;
+    }
+    double average_read_latency = static_cast<double>(total_read_latency.count()) / read_time.size();
+
+
+    auto IOPS = totalIOPS / elapsed_time ;
+
+    printf("aaa");
+
 }
 
 int my_fuse_session_loop(struct fuse_session *se) {
@@ -119,7 +158,7 @@ int my_fuse_session_loop(struct fuse_session *se) {
     signal(SIGALRM, sigint_handler);
 
     while (!fuse_session_exited(se) && !stop) {
-        auto start = std::time(nullptr);
+        auto start = std::chrono::high_resolution_clock::now();
         res = my_fuse_session_receive_buf_int(se, &fbuf);
         // Log the received request to the log file
         write_request_to_log(log_file, fbuf.mem, res);
@@ -130,12 +169,13 @@ int my_fuse_session_loop(struct fuse_session *se) {
         if (res <= 0)
             break;
         struct my_fuse_in_header *in = static_cast<struct my_fuse_in_header *>(fbuf.mem);
-        std::cout << "Opcode is: " << in->opcode << std::endl;
+        //std::cout << "Opcode is: " << in->opcode << std::endl;
         if(in->opcode==16)
-            write_time[in->opcode] = start;
+            writeStartTime[in->unique] = start;
 
         if(in->opcode==15)
-            read_time[in->opcode] = start;
+            readStartTime[in->unique] = start;
+
 
         fuse_session_process_buf(se, &fbuf);
     }

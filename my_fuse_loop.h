@@ -19,12 +19,20 @@
 #include <signal.h>
 #include <ctime>
 #include <iostream>
+#include <chrono>
 
 #define QUEUE_DEPTH 8
 #define BATCH_SIZE 4
 
-extern std::unordered_map<uint64_t, time_t> write_time;
-extern std::unordered_map<uint64_t, time_t> read_time;
+extern std::unordered_map<uint64_t, std::chrono::high_resolution_clock::time_point> writeStartTime;
+extern std::unordered_map<uint64_t, std::chrono::high_resolution_clock::time_point> readStartTime;
+
+extern std::unordered_map<uint64_t,std::chrono::nanoseconds> write_time;
+extern std::unordered_map<uint64_t,std::chrono::nanoseconds> read_time;
+
+
+extern std::unordered_map<pthread_t,uint64_t> write_ops;
+extern std::unordered_map<pthread_t,uint64_t> read_ops;
 
 struct my_fuse_in_header {
     uint32_t len;
