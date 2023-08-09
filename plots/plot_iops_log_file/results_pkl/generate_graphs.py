@@ -117,12 +117,12 @@ def create_filesystem_comparison_chart(data, num_jobs, num_files, file_size, io_
 
     plt.tight_layout()
 
-    plt.savefig(f"iops_comparison_{num_jobs}jobs_{num_files}files_{file_size}.png")
+    plt.savefig(f"iops_comparison_{num_jobs}jobs_{num_files}files_{file_size}_{io_size}.png")
     # Show the plot for 4 seconds
     #plt.show(block=False)  # Set block=False to allow the script to continue
     #plt.pause(4)
     plt.close()
-    name = f"iops_comparison_{num_jobs}jobs_{num_files}files_{file_size}.png"
+    name = f"iops_comparison_{num_jobs}jobs_{num_files}files_{file_size}_{io_size}.png"
     print(name)
 
 
@@ -174,8 +174,8 @@ def create_filesystem_comparison_chart_latency(data, num_jobs, num_files, measur
             ax.text(i + j * bar_width + bar_width / 2, value, '{:.2f}'.format(value), ha='center', va='bottom')
 
     plt.tight_layout()
-    plt.savefig(f"latency_comparison_{num_jobs}jobs_{num_files}files_{file_size}.png")
-    print(f"latency_comparison_{num_jobs}jobs_{num_files}files_{file_size}.png")
+    plt.savefig(f"latency_comparison_{num_jobs}jobs_{num_files}files_{file_size}_{io_size}.png")
+    print(f"latency_comparison_{num_jobs}jobs_{num_files}files_{file_size}_{io_size}.png")
     # Show the plot for 4 seconds
     #plt.show(block=False)  # Set block=False to allow the script to continue
     #plt.pause(4)
