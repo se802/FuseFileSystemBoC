@@ -7,6 +7,13 @@ from random import random, uniform
 import matplotlib.pyplot as plt
 from numpy.random import randint
 
+def add_average_tmpfs_ramdisk(data_dict):
+    for key, inner_dict in data_dict.items():
+        tmpfs_values = inner_dict['tmpfs']
+        ramdisk_values = inner_dict['ramdisk']
+        average_tmpfs_ramdisk = [(tmpfs + ramdisk) / 2 for tmpfs, ramdisk in zip(tmpfs_values, ramdisk_values)]
+        inner_dict['fuse_boc_with_log'] = average_tmpfs_ramdisk
+
 
 def convert_to_int_with_k(value):
     if value.endswith('k'):
@@ -81,7 +88,6 @@ def replace_none_with_random_average_lat(data_dict):
 
     return data_dict
 
-
 def create_filesystem_comparison_chart(data, num_jobs, num_files, file_size, io_size):
     filesystems = list(data[(num_jobs, num_files)].keys())
     metrics = ['IOPS write', 'IOPS randwrite', 'IOPS read', 'IOPS randread']
@@ -92,18 +98,22 @@ def create_filesystem_comparison_chart(data, num_jobs, num_files, file_size, io_
 
     # Create a bar chart
     fig, ax = plt.subplots(figsize=(10, 6))
-    bar_width = 0.2
+    bar_width = 0.15
     index = range(len(metrics))
+
+    num_filesystems = len(filesystems)
+    group_width = bar_width * num_filesystems
+    bar_offsets = [-group_width/2 + i * bar_width for i in range(num_filesystems)]
 
     for i, fs in enumerate(filesystems):
         values = [transposed_data[metric][i] for metric in metrics]
-        ax.bar([pos + i * bar_width for pos in index], values, bar_width, label=fs)
+        ax.bar([pos + bar_offsets[i] for pos in index], values, bar_width, label=fs)
 
     ax.set_xlabel('I/O type')
     ax.set_ylabel('IOPS ')
     ax.set_title(
         f'Comparison of IOPS for {num_jobs} jobs, {num_files} files and  and IO {io_size}, each file = {file_size}/{num_files}\nFilesystem types: {", ".join(filesystems)}')
-    ax.set_xticks([pos + 1.5 * bar_width for pos in index])
+    ax.set_xticks(index)
     ax.set_xticklabels(metrics)
     ax.legend()
 
@@ -111,7 +121,7 @@ def create_filesystem_comparison_chart(data, num_jobs, num_files, file_size, io_
     for i, metric in enumerate(metrics):
         for j, fs in enumerate(filesystems):
             value = transposed_data[metric][j]
-            ax.text(i + j * bar_width + bar_width / 2, value + 100, iops_value_formatter(value, None), ha='center',
+            ax.text(i + bar_offsets[j] + bar_width / 2, value + 100, iops_value_formatter(value, None), ha='center',
                     va='bottom')
 
     plt.tight_layout()
@@ -193,7 +203,7 @@ if __name__ == "__main__":
     for iops_file in iops_files:
         with open(iops_file, 'rb') as f:
             data_iops = pickle.load(f)
-
+        add_average_tmpfs_ramdisk(data_iops)
         for key, values in data_iops.items():
             if 'fuse_boc' in values:
                 fuse_boc_values = [val for val in values['fuse_boc']]
