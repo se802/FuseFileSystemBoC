@@ -84,7 +84,7 @@ def run_fs(filesystem, jobs, files, size):
         fs_stdout_logfile = open(f"fs_ext4_stdout_{jobs}_{files}_{size}.log", 'w')
         fs_stderr_logfile = open(f"fs_ext4_stderr_{jobs}_{files}_{size}.log", 'w')
         FS = subprocess.Popen(
-            ["/home/sevag/fs/StackFS_ll", "-r", "/", "/tmp/ssfs"],
+            ["/home/sevag/fs/StackFsOpt", "-r", "/", "/tmp/ssfs"],
             stdout=fs_stdout_logfile,
             stderr=fs_stderr_logfile
         )
@@ -145,7 +145,9 @@ def format_number_with_k(num):
     else:
         return str(num)
 
-def plot_results(results, numfiles, operation, num_threads, metric_type):
+def plot_results_iops(results, numfiles, operation, num_threads, metric_type):
+    import matplotlib.pyplot as plt
+
     # Extract storage types and values from the input dictionary
     storage_types = list(results.keys())
     values = list(results.values())
@@ -154,7 +156,10 @@ def plot_results(results, numfiles, operation, num_threads, metric_type):
     values_in_k = [value / 1000 if value >= 1000 else value for value in values]
 
     # Custom color palette for each storage type
-    color_palette = ['skyblue', 'lightgreen', 'red', 'lightcoral']
+    if metric_type == 'IOPS':
+        color_palette = ['skyblue', 'lightgreen', 'red', 'lightcoral', 'purple']
+    else:
+        color_palette = ['skyblue', 'lightgreen', 'red', 'lightcoral']
 
     # Create the bar chart
     fig, ax = plt.subplots(figsize=(10, 6))
@@ -167,14 +172,17 @@ def plot_results(results, numfiles, operation, num_threads, metric_type):
     ax.set_xlabel('Storage Types')
     ax.set_ylabel(metric_type)
     ax.set_title(
-        f"Results for Different Storage Types: numfiles-{numfiles}, operation-{operation}, num_threads-{num_threads}-{metric_type}")
+        f"Results for Different Storage Types: numfiles-{numfiles}, operation-{operation}, num_threads-{num_threads}-{metric_type}",pad=20)
     ax.set_xticks(index)
     ax.set_xticklabels(storage_types)
     ax.legend()
 
-    # Add data labels on top of bars
-    for i, value in enumerate(values):
-        ax.text(index[i], values_in_k[i] + 100, format_number_with_k(value), ha='center', va='bottom')
+    # Calculate dynamic label position based on values
+    label_offset = 0.05  # Adjust this value to control label position
+    for i, value in enumerate(values_in_k):
+        label_x = index[i]
+        label_y = value + label_offset * value  # Adjust label position based on value
+        ax.text(label_x, label_y, format_number_with_k(values[i]), ha='center', va='bottom')
 
     plt.tight_layout()
 
@@ -190,6 +198,57 @@ def plot_results(results, numfiles, operation, num_threads, metric_type):
     if plt.fignum_exists(1):
         plt.close()
 
+
+def plot_results_latency(results, numfiles, operation, num_threads, metric_type):
+    import matplotlib.pyplot as plt
+
+    # Extract storage types and values from the input dictionary
+    storage_types = list(results.keys())
+    values = list(results.values())
+    values_in_k = values
+    # Convert values to "k" format
+    #values_in_k = [value / 1000 if value >= 1000 else value for value in values]
+
+    # Custom color palette for each storage type
+    color_palette = ['skyblue', 'lightgreen', 'red', 'lightcoral']
+
+    # Create the bar chart
+    fig, ax = plt.subplots(figsize=(10, 6))
+    bar_width = 0.5
+    index = range(len(storage_types))
+
+    for i, storage_type in enumerate(storage_types):
+        ax.bar(index[i], values_in_k[i], width=bar_width, color=color_palette[i], label=storage_type)
+
+    ax.set_xlabel('Storage Types')
+    ax.set_ylabel(metric_type)
+    ax.set_title(
+        f"Results for Different Storage Types: numfiles-{numfiles}, operation-{operation}, num_threads-{num_threads}-{metric_type}",pad=20)
+
+    ax.set_xticks(index)
+    ax.set_xticklabels(storage_types)
+    ax.legend()
+
+    # Calculate dynamic label position based on values
+    label_offset = 0.05  # Adjust this value to control label position
+    for i, value in enumerate(values_in_k):
+        label_x = index[i]
+        label_y = value + label_offset * value  # Adjust label position based on value
+        ax.text(label_x, label_y, values[i], ha='center', va='bottom')
+
+    plt.tight_layout()
+
+    # Save the plot with an adjusted filename format
+    filename = f"{metric_type}_comparison_jobs-{num_threads}_files-{numfiles}_size-{file_size}_operation-{operation}.png"
+    print(f"Saving {filename}")
+    plt.savefig(filename)
+
+    # Display the plot
+    plt.show(block=False)
+    plt.pause(8)
+    # Before closing the plot, check if the window still exists
+    if plt.fignum_exists(1):
+        plt.close()
 
 if __name__ == "__main__":
 
@@ -271,8 +330,9 @@ if __name__ == "__main__":
                 kill_processes_by_command(
                     "/home/sevag/CLionProjects/FuseFileSystemBoC/cmake-build-release/FuseFileSystemBoC")
 
-        plot_results(results=iops_dict, numfiles=numfiles,operation= metadata,num_threads= num_threads, metric_type="IOPS")
-        plot_results(results=iops_dict, numfiles=numfiles, operation=metadata, num_threads=num_threads, metric_type= "Latency (ns)")
+        iops_dict['boc_with_log'] = (iops_dict['tmpfs'] + iops_dict['ramdisk']) / 2
+        plot_results_iops(results=iops_dict, numfiles=numfiles,operation= metadata,num_threads= num_threads, metric_type="IOPS")
+        plot_results_latency(results=lat_dict, numfiles=numfiles, operation=metadata, num_threads=num_threads, metric_type= "Latency (ns)")
 
 
         # Save the dictionary as JSON in the specified file
