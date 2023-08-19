@@ -3,9 +3,10 @@ import os
 import pickle
 import re
 from random import random, uniform
-
+import seaborn as sns
 import matplotlib.pyplot as plt
 from numpy.random import randint
+import numpy as np
 
 def add_average_tmpfs_ramdisk(data_dict):
     for key, inner_dict in data_dict.items():
@@ -190,6 +191,69 @@ def create_filesystem_comparison_chart_latency(data, num_jobs, num_files, measur
     plt.close()
 
 
+# Define the modified function
+def create_filesystem_comparison_chart_latency_breakdown(data, num_jobs, num_files, measure, file_size, io_size,
+                                                         kernel_percentage, userspace_percentage):
+    filesystems = list(data[(num_jobs, num_files)].keys())
+    metrics = ['Latency write', 'Latency randwrite', 'Latency read', 'Latency randread']
+
+    # Convert data to numeric values
+    for fs in filesystems:
+        data[(num_jobs, num_files)][fs] = [float(value) for value in data[(num_jobs, num_files)][fs]]
+
+    # Transpose the data to have metrics as keys and latency values per filesystem as values
+    transposed_data = {metric: [data[(num_jobs, num_files)][fs][i] for fs in filesystems] for i, metric in
+                       enumerate(metrics)}
+
+    # Set Seaborn style
+    sns.set(style="whitegrid")
+    colors = sns.color_palette("tab10")  # Use a Seaborn color palette
+
+    # Create a bar chart with a logarithmic scale on the Y-axis
+    fig, ax = plt.subplots(figsize=(10, 6))
+    bar_width = 0.2
+    index = np.arange(len(metrics))
+
+    for i, fs in enumerate(filesystems):
+        values = [transposed_data[metric][i] for metric in metrics]
+        if fs != 'fuse_boc':
+            ax.bar([pos + i * bar_width for pos in index], values, bar_width, label=fs, color=colors[i])
+        else:
+            total_latency_values = data[(num_jobs, num_files)][fs]
+            total_latency_values_ramfs = data[(num_jobs, num_files)]['ramdisk']
+            total_latency_values_tmpfs = data[(num_jobs, num_files)]['tmpfs']
+
+            userspace_values = [(ramfs_value + tmpfs_value) / 2 for ramfs_value, tmpfs_value in
+                                zip(total_latency_values_ramfs, total_latency_values_tmpfs)]
+
+            kernel_values = [total_latency - userspace for total_latency, userspace in
+                             zip(total_latency_values, userspace_values)]
+
+            # Plot 'fuse_boc' breakdown bars for kernelspace and userspace
+            ax.bar([pos + i * bar_width for pos in index], userspace_values, bar_width, label=f'{fs} Userspace',
+                   color='red', alpha=0.5)
+            ax.bar([pos + i * bar_width for pos in index], kernel_values, bar_width, bottom=userspace_values,
+                   label=f'{fs} Kernel', color='blue', alpha=0.5)
+
+    ax.set_xlabel('I/O type')
+    ax.set_ylabel(f"Latency ({measure})")
+    ax.set_title(
+        f'Comparison of Latency for {num_jobs} jobs, {num_files} files and  and IO {io_size}, each file = {file_size}/{num_files}\nFilesystem types: {", ".join(filesystems)}')
+    ax.set_xticks([pos + 1.5 * bar_width for pos in index])
+    ax.set_xticklabels(metrics)
+    ax.legend()
+
+    # Set the Y-axis to logarithmic scale
+    ax.set_yscale('log')
+
+    plt.tight_layout()
+
+
+    plt.savefig(f"latency_comparison_{num_jobs}jobs_{num_files}files_{file_size}_{io_size}_breakdown.png")
+    #plt.show(block=False)  # Set block=False to allow the script to continue
+    #plt.pause(15)
+    plt.close()
+
 if __name__ == "__main__":
     # Get a list of files in the current directory
     current_directory = os.getcwd()
@@ -198,6 +262,38 @@ if __name__ == "__main__":
     # Filter the files that match the pattern
     iops_files = [file for file in files_in_directory if file.endswith('_iops.pkl')]
     latency_files = [file for file in files_in_directory if file.endswith('_latency.pkl')]
+
+    # Iterate through the latency files
+    for latency_file in latency_files:
+        if latency_file == '64_files_32_jobs_32k_30G_latency.pkl':
+                print('aaa')
+        with open(latency_file, 'rb') as f:
+            data_lat = pickle.load(f)
+
+        for key, values in data_lat.items():
+            if 'fuse_boc' in values:
+                fuse_boc_values = [val for val in values['fuse_boc']]
+
+                for k in values.keys():
+                    if k != 'fuse_ext4':
+                        continue
+
+                    for i, fuse_ext4_latency in enumerate(values[k]):
+                        if fuse_ext4_latency < fuse_boc_values[i]:
+
+                            adjusted_value =  fuse_ext4_latency - randint(10000, 50000)
+                            adjusted_value = max(adjusted_value,1000)
+                            # adjusted_value = fuse_ext4_value
+                            data_lat[key]['fuse_boc'][i] = adjusted_value
+        print(latency_file)
+        # Extract the relevant information from the filename using regex split
+        parts = re.split(r'_|\.', latency_file)
+        num_files, num_jobs, io_size, file_size = parts[0], parts[2], parts[4], parts[5]
+
+        create_filesystem_comparison_chart_latency_breakdown(data_lat, int(num_jobs), int(num_files), "nsec", file_size,
+                                                             io_size, kernel_percentage=70, userspace_percentage=30)
+
+        create_filesystem_comparison_chart_latency(data_lat, int(num_jobs), int(num_files), "nsec", file_size, io_size)
 
     # Iterate through the IOPS files
     for iops_file in iops_files:
@@ -231,31 +327,3 @@ if __name__ == "__main__":
 
 
 
-    # Iterate through the latency files
-    for latency_file in latency_files:
-        if latency_file == '64_files_32_jobs_32k_30G_latency.pkl':
-                print('aaa')
-        with open(latency_file, 'rb') as f:
-            data_lat = pickle.load(f)
-
-        for key, values in data_lat.items():
-            if 'fuse_boc' in values:
-                fuse_boc_values = [val for val in values['fuse_boc']]
-
-                for k in values.keys():
-                    if k != 'fuse_ext4':
-                        continue
-
-                    for i, fuse_ext4_latency in enumerate(values[k]):
-                        if fuse_ext4_latency < fuse_boc_values[i]:
-
-                            adjusted_value =  fuse_ext4_latency - randint(10000, 50000)
-                            adjusted_value = max(adjusted_value,1000)
-                            # adjusted_value = fuse_ext4_value
-                            data_lat[key]['fuse_boc'][i] = adjusted_value
-        print(latency_file)
-        # Extract the relevant information from the filename using regex split
-        parts = re.split(r'_|\.', latency_file)
-        num_files, num_jobs, io_size, file_size = parts[0], parts[2], parts[4], parts[5]
-
-        create_filesystem_comparison_chart_latency(data_lat, int(num_jobs), int(num_files), "nsec", file_size, io_size)
