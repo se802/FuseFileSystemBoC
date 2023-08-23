@@ -30,8 +30,8 @@ This directory contains various plot files that illustrate the results of the ev
 The `plot_iops/charts/Performance_Data` directory contains performance data plots with various configurations. Each subdirectory within `plot_iops` represents a specific set of experiments. See the following exampleexamples:
 
 - **Experiment 1: 10G - 128 Files - 16 Threads - 4k Block Size**
-  - IOPS Comparison: ![Link to IOPS Comparison Plot](./PLOT_DATA_WORKLOAD_IOPS_LATENCY_SCRIPTS/charts/Performance_Data/10G/128/16/4k/iops_comparison_16jobs_128files_10Gfilesize_4kblocksize.png)
-  - Latency Comparison: ![Link to Latency Comparison Plot](./PLOT_DATA_WORKLOAD_IOPS_LATENCY_SCRIPTS/charts/Performance_Data/10G/128/16/4k/latency_comparison_16jobs_128files_10Gfilesize_4kblocksize.png)
+  - IOPS Comparison: ![Link to IOPS Comparison Plot](./PLOT_DATA_WORKLOAD_IOPS_LATENCY_SCRIPTS/charts/Performance_Data/10G_4k/128/32/iops_comparison_32jobs_128files_10G_4k.png)
+  - Latency Comparison: ![Link to Latency Comparison Plot](./PLOT_DATA_WORKLOAD_IOPS_LATENCY_SCRIPTS/charts/Performance_Data/10G_4k/128/32/latency_comparison_32jobs_128files_10G_4k.png)
 
 In the `plot_metadata` directory you can find the results for the metadata operations([File Creation](https://fio.readthedocs.io/en/latest/fio_doc.html#i-o-engine), [File Deletion](https://fio.readthedocs.io/en/latest/fio_doc.html#i-o-engine), [Stat on Files](https://fio.readthedocs.io/en/latest/fio_doc.html#i-o-engine))
 
