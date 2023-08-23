@@ -1,5 +1,0 @@
-fusermount: entry for /tmp/ssfs not found in /etc/mtab
-mkdir: cannot create directory ‘/tmp/ssfs’: File exists
-mkdir: cannot create directory ‘/home/sevag/fuse_ext4’: File exists
-[sudo] password for sevag: sudo: a terminal is required to read the password; either use the -S option to read from standard input or configure an askpass helper
-sudo: a password is required
