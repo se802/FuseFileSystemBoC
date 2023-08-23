@@ -1,4 +1,4 @@
-# FIO Performance Measurement and Filesystem Comparison
+# FIO Performance Measurement and Filesystem Comparison on Metadata Intensive Workloads
 
 This project contains two scripts that work together to generate graphs comparing the performance of different filesystems using the FIO benchmark tool. The first script generates FIO configurations, runs FIO tests on various filesystems, and saves the results as pickle files. The second script reads the generated pickle files, processes the data, and creates comparison charts.
 
