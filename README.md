@@ -2,13 +2,12 @@
 
 This repository contains the code for a FUSE Filesystem that utilizes the Verona concurrency model. Project Verona is a research project by Microsoft Research and academic collaborators at Imperial College London. It explores language and runtime design for safe, scalable memory management, and compartmentalization. The prototype presented here focuses on the memory management aspects of the research.
 
-## :rocket: Prerequisites
+
+## :wrench: Configuration
 
 Before running the application, you need to ensure that you have the necessary dependencies installed:
 
 1. Install libfuse by following the instructions [here](https://github.com/se802/verona-rt/blob/102e3b37d4361bf08449c42b67a14cf14d9cacc7/docs/building.md).
-
-## :wrench: Configuration
 
 Before building and running the filesystem, make sure to configure the path where you want to mount the filesystem. To do this, modify the source code in the following line:
 
