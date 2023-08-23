@@ -41,7 +41,7 @@ The main purpose of this project is to analyze and compare the performance of di
 
 
 
-## Configuration
+## Explanation
 
 - The `generate_fio_configs.py` script allows you to specify various configurations for the FIO tests, such as I/O operation type, number of jobs, number of files, file size, etc. Modify the configurations in the script according to your needs.
 
