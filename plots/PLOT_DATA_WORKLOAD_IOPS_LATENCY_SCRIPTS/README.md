@@ -31,7 +31,7 @@ The main purpose of this project is to analyze and compare the performance of di
 
 ## Usage
 
-1. Configure the settings in the first script `generate_fio_configs.py` to define the combinations of I/O operations, filesystems, and configurations you want to test.
+1. Configure the settings in the first script `generate_fio_configs.py`,  [here](https://github.com/se802/FuseFileSystemBoC/blob/ae36a43c98ba3949be33c998642bfe7e13516565/plots/PLOT_DATA_WORKLOAD_IOPS_LATENCY_SCRIPTS/generate_configure_file.py#L192),  to define the combinations of I/O operations, filesystems, and configurations you want to test.
 
 2. Run the first script:
 
