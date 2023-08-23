@@ -2,7 +2,13 @@
 
 ## Overview
 
-Provide an overview of the project and its purpose. Mention the context of the evaluation and the goals you aimed to achieve.
+The "MAX_THROUGHPUT_ANALYSIS_RESULTS" directory contains graphs that delve into the highest achievable Input/Output Operations Per Second (IOPS) via the /dev/fuse interface. This analysis eliminates the processing time of read and write operations and spans three scenarios: one dispatcher, multiple dispatchers, and one dispatcher with io_uring.
+
+Within the "IMPACT_OF_BATCH_SIZE_RESULTS" folder, you'll find graphs illustrating the influence of io_uring batch sizes and the number of verona-rt workers on throughput and latency.
+
+The "PLOT_DATA_WORKLOAD_IOPS_LATENCY_SCRIPTS" directory hosts scripts essential for reproducing the graphs from data-intensive workload experiments.
+
+Finally, the "PLOT_METADATA_IOPS_LATENCY_SCRIPTS" directory contains scripts necessary for replicating the graphs obtained from data-intensive workload experiments.
 
 ## Evaluation Results
 
