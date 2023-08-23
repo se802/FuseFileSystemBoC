@@ -1,4 +1,4 @@
-# FIO Performance Measurement and Filesystem Comparison
+# FIO Performance Measurement and Filesystem Comparison on Data Intensive Workloads
 
 This project contains two scripts that work together to generate graphs comparing the performance of different filesystems using the FIO benchmark tool. The first script (generate_configure_file.py) generates FIO configurations, runs FIO tests on various filesystems, and saves the results as pickle files. The second script (generate_graphs.py) reads the generated pickle files, processes the data, and creates comparison charts. The third script (organize_to_dirs.py) organizes the generated images in more readable folder hierarchy. 
 
