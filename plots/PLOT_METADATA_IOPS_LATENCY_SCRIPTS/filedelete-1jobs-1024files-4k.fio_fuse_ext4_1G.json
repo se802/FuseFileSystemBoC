@@ -1,0 +1,3 @@
+fio: /tmp/ssfs/home/sevag/fuse_ext4 is not a directory
+fio: failed parsing directory=/tmp/ssfs/home/sevag/fuse_ext4
+fio: job global dropped

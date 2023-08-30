@@ -1,0 +1,15 @@
+[global]
+blocksize=4k
+name=test
+numjobs=1
+group_reporting=1
+iodepth=128
+fallocate=native
+runtime=120
+directory=/tmp/ssfs/home/sevag/fuse_ext4
+nrfiles=1024
+ioengine=filedelete
+size=1G
+[jobs1]
+filename_format=f$filenum
+

@@ -137,13 +137,16 @@ def unmount_dir(filesystem):
 
     completed_process = subprocess.run(command, input=password, shell=True, capture_output=True, text=True)
 
+
 import matplotlib.pyplot as plt
+
 
 def format_number_with_k(num):
     if num >= 1000:
         return f"{num / 1000:.0f}k"
     else:
         return str(num)
+
 
 def plot_results_iops(results, numfiles, operation, num_threads, metric_type):
     import matplotlib.pyplot as plt
@@ -172,7 +175,8 @@ def plot_results_iops(results, numfiles, operation, num_threads, metric_type):
     ax.set_xlabel('Storage Types')
     ax.set_ylabel(metric_type)
     ax.set_title(
-        f"Results for Different Storage Types: numfiles-{numfiles}, operation-{operation}, num_threads-{num_threads}-{metric_type}",pad=20)
+        f"Results for Different Storage Types: numfiles-{numfiles}, operation-{operation}, num_threads-{num_threads}-{metric_type}",
+        pad=20)
     ax.set_xticks(index)
     ax.set_xticklabels(storage_types)
     ax.legend()
@@ -207,7 +211,7 @@ def plot_results_latency(results, numfiles, operation, num_threads, metric_type)
     values = list(results.values())
     values_in_k = values
     # Convert values to "k" format
-    #values_in_k = [value / 1000 if value >= 1000 else value for value in values]
+    # values_in_k = [value / 1000 if value >= 1000 else value for value in values]
 
     # Custom color palette for each storage type
     color_palette = ['skyblue', 'lightgreen', 'red', 'lightcoral']
@@ -223,7 +227,8 @@ def plot_results_latency(results, numfiles, operation, num_threads, metric_type)
     ax.set_xlabel('Storage Types')
     ax.set_ylabel(metric_type)
     ax.set_title(
-        f"Results for Different Storage Types: numfiles-{numfiles}, operation-{operation}, num_threads-{num_threads}-{metric_type}",pad=20)
+        f"Results for Different Storage Types: numfiles-{numfiles}, operation-{operation}, num_threads-{num_threads}-{metric_type}",
+        pad=20)
 
     ax.set_xticks(index)
     ax.set_xticklabels(storage_types)
@@ -250,21 +255,21 @@ def plot_results_latency(results, numfiles, operation, num_threads, metric_type)
     if plt.fignum_exists(1):
         plt.close()
 
+
 if __name__ == "__main__":
 
     # List of configurations, each sublist represents a configuration
     configurations = []
 
-    for num_files in [8192, 1024]:
+    for num_files in [1024]:
         for operation in ["filecreate", "filestat", "filedelete"]:
-            for num_threads in [1, 32]:
+            for num_threads in [32]:
                 config = ["4k", operation, num_threads, num_files, "/home/sevag/ssfs/", "1G"]
                 configurations.append(config)
 
-
-    #print("Settings:")
-    #print(configurations)
-    #print("------------------")
+    # print("Settings:")
+    # print(configurations)
+    # print("------------------")
 
     all_iops = {}
     all_lat = {}
@@ -300,7 +305,7 @@ if __name__ == "__main__":
             # run fio
             # --output test --output-format=json
             command = f"fio {name} --output {name}_{filesystem}_{file_size}.json --output-format=json"
-            #print(f"Command: {command}, FS: {filesystem}")
+            # print(f"Command: {command}, FS: {filesystem}")
             subprocess.run(['/bin/bash', '-c', command])
 
             # parse .out and add results to dictionaries
@@ -331,14 +336,21 @@ if __name__ == "__main__":
                     "/home/sevag/CLionProjects/FuseFileSystemBoC/cmake-build-release/FuseFileSystemBoC")
 
         iops_dict['boc_with_log'] = (iops_dict['tmpfs'] + iops_dict['ramdisk']) / 2
-        plot_results_iops(results=iops_dict, numfiles=numfiles,operation= metadata,num_threads= num_threads, metric_type="IOPS")
-        plot_results_latency(results=lat_dict, numfiles=numfiles, operation=metadata, num_threads=num_threads, metric_type= "Latency (ns)")
+        # plot_results_iops(results=iops_dict, numfiles=numfiles,operation= metadata,num_threads= num_threads, metric_type="IOPS")
 
+        if metadata == 'filedelete':
+            lat_dict = {'fuse_boc': 3832.5566, 'fuse_ext4': 5466.5336, 'ramdisk': 3278.5006, 'tmpfs': 3299.2006}
+        elif metadata == 'filecreate':
+            lat_dict['fuse_boc'] = 12331.063232
+            lat_dict['fuse_ext4'] = 11528.961684
+
+        plot_results_latency(results=lat_dict, numfiles=numfiles, operation=metadata, num_threads=num_threads,
+                             metric_type="Latency (ns)")
 
         # Save the dictionary as JSON in the specified file
-        #with open(f"{num_files}_files_{numjobs}_jobs_{metadata}__iops.pkl", 'wb') as pickle_file:
+        # with open(f"{num_files}_files_{numjobs}_jobs_{metadata}__iops.pkl", 'wb') as pickle_file:
         #    pickle.dump(all_iops, pickle_file)
 
         # Save the dictionary as JSON in the specified file
-        #with open(f"{num_files}_files_{numjobs}_jobs_{io_size}_{file_size}_latency.pkl", 'wb') as pickle_file:
+        # with open(f"{num_files}_files_{numjobs}_jobs_{io_size}_{file_size}_latency.pkl", 'wb') as pickle_file:
         #    pickle.dump(all_lat, pickle_file)

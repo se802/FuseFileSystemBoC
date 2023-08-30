@@ -1,0 +1,2 @@
+mkdir: cannot create directory ‘/tmp/ssfs’: File exists
+mkdir: cannot create directory ‘/home/sevag/fuse_ext4’: File exists
