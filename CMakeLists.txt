@@ -7,8 +7,8 @@ add_subdirectory(verona-rt)
 
 #include_directories(/usr/local/include/fuse3)
 
-add_executable(FuseFileSystemBoC main.cpp Block.cpp DirInode.cpp FileSystem.cpp Inode.cpp RegInode.cpp my_fuse_loop.h
-        my_fuse_loop.cpp)
+add_executable(FuseFileSystemBoC src/main.cpp src/Block.cpp src/DirInode.cpp src/FileSystem.cpp src/Inode.cpp src/RegInode.cpp src/my_fuse_loop.h
+        src/my_fuse_loop.cpp)
 
 target_include_directories(FuseFileSystemBoC
         PUBLIC verona-rt/src/rt/
