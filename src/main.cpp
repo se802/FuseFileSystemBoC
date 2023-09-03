@@ -63,6 +63,7 @@ void start_dispatcher(int argc, char* argv[], SystematicTestHarness* harness) {
         exit(1);
 
       setbuf(stdout, 0);
+      printf("Mount FS at %s\n",PATH);
       int returnValue = system("fusermount -u " PATH);
 
       if (returnValue == -1) {
@@ -131,5 +132,5 @@ int main(int argc, char *argv[]) {
   if (harness.detect_leaks)
     snmalloc::debug_check_empty<snmalloc::Alloc::Config>();
 
-  return 0;
+  return 0; 
 }
